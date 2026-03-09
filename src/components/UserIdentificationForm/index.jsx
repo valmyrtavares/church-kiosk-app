@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ActionButton from '../ActionButton';
-import { storageService } from '../../services/storageService';
 import formStyles from '../../styles/form.module.scss';
+import ActionButton from '../../components/ActionButton';
+import { storageService } from '../../services/storageService';
 
 const UserIdentificationForm = ({ onIdentified }) => {
     const navigate = useNavigate();
-    const [mode, setMode] = useState(null); // 'anonymous' | 'assisted'
+    const [mode, setMode] = useState(null);
     const [cpf, setCpf] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -28,8 +28,7 @@ const UserIdentificationForm = ({ onIdentified }) => {
         setError('');
 
         try {
-            // Remover formatações se houver
-            const cleanCpf = cpf.replace(/\D/g, '');
+            const cleanCpf = String(cpf).replace(/\D/g, '');
             const client = await storageService.getClientByCpf(cleanCpf);
 
             if (client) {
@@ -45,8 +44,6 @@ const UserIdentificationForm = ({ onIdentified }) => {
     };
 
     const handleRegister = () => {
-        // Navigate to registration, passing the intended return page info if needed
-        // Assuming simple flow: after registration user will be redirected to home or back here
         navigate('/cadastro');
     };
 
@@ -54,19 +51,12 @@ const UserIdentificationForm = ({ onIdentified }) => {
         return (
             <div className={formStyles.card}>
                 <div className={formStyles.inputGroup}>
-                    <label>Identificação</label>
                     <div className={formStyles.modeSelection}>
-                        <ActionButton
-                            variant="outline"
-                            onClick={() => handleModeSelect('anonymous')}
-                        >
+                        <ActionButton variant="outline" onClick={() => handleModeSelect('anonymous')}>
                             Anônimo
                         </ActionButton>
-                        <ActionButton
-                            variant="primary"
-                            onClick={() => handleModeSelect('assisted')}
-                        >
-                            Assistido (Buscar Cadastro)
+                        <ActionButton variant="primary" onClick={() => handleModeSelect('assisted')}>
+                            Assistido (Buscar CPF)
                         </ActionButton>
                     </div>
                 </div>
@@ -95,31 +85,16 @@ const UserIdentificationForm = ({ onIdentified }) => {
                 )}
 
                 <div className={formStyles.actionRow}>
-                    <ActionButton
-                        variant="outline"
-                        fullWidth
-                        onClick={() => setMode(null)}
-                        disabled={loading}
-                    >
+                    <ActionButton variant="outline" fullWidth onClick={() => setMode(null)} disabled={loading}>
                         Voltar
                     </ActionButton>
 
                     {error === 'Cliente não encontrado.' ? (
-                        <ActionButton
-                            variant="secondary"
-                            fullWidth
-                            onClick={handleRegister}
-                            disabled={loading}
-                        >
+                        <ActionButton variant="secondary" fullWidth onClick={handleRegister} disabled={loading}>
                             Cadastrar Agora
                         </ActionButton>
                     ) : (
-                        <ActionButton
-                            variant="primary"
-                            fullWidth
-                            onClick={handleCpfSubmit}
-                            disabled={loading || !cpf}
-                        >
+                        <ActionButton variant="primary" fullWidth onClick={handleCpfSubmit} disabled={loading || !cpf}>
                             {loading ? 'Buscando...' : 'Buscar'}
                         </ActionButton>
                     )}
