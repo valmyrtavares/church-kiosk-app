@@ -6,6 +6,7 @@ import Offering from './pages/Offering';
 import Tithe from './pages/Tithe';
 import PrayerRequest from './pages/PrayerRequest';
 import MiracleReport from './pages/MiracleReport';
+import CustomerRegistration from './pages/CustomerRegistration';
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
           <Route path="/dizimo" element={<Tithe />} />
           <Route path="/pedido-oracao" element={<PrayerRequest />} />
           <Route path="/milagre" element={<MiracleReport />} />
+          <Route path="/cadastro" element={<CustomerRegistration />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   );

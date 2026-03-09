@@ -1,0 +1,91 @@
+@import '../../styles/variables';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xl;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 2rem;
+    color: $text-color;
+    text-align: center;
+    margin-bottom: $spacing-lg;
+}
+
+.card {
+    background-color: $card-bg;
+    padding: $spacing-xl;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    label {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: $text-color;
+    }
+
+    input,
+    textarea {
+        padding: $spacing-md;
+        font-size: 1.5rem;
+        /* Larger for touch */
+        border: 2px solid #e2e8f0;
+        border-radius: $border-radius;
+        font-family: inherit;
+        transition: border-color 0.2s;
+
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+        }
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 150px;
+    }
+}
+
+.modeSelection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-md;
+}
+
+.feedback {
+    margin-top: $spacing-md;
+    padding: $spacing-md;
+    border-radius: $border-radius;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+
+    &.success {
+        background-color: #c6f6d5;
+        color: #2f855a;
+    }
+
+    &.error {
+        background-color: #fed7d7;
+        color: #c53030;
+    }
+}
+
+.actionRow {
+    display: flex;
+    gap: $spacing-md;
+    margin-top: $spacing-lg;
+}

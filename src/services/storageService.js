@@ -46,5 +46,14 @@ export const storageService = {
         await simulateDelay();
         const collection = getCollection(collectionName);
         return collection.find(doc => doc.id === id) || null;
+    },
+
+    // Busca cliente por CPF (MVP)
+    async getClientByCpf(cpf) {
+        await simulateDelay(300); // Simulate network request
+        const clientes = getCollection('clientes');
+        // Ensure clean comparison
+        const cleanCpf = String(cpf).replace(/\D/g, '');
+        return clientes.find(c => String(c.cpf).replace(/\D/g, '') === cleanCpf) || null;
     }
 };
