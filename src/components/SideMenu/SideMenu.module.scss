@@ -2,7 +2,6 @@
 
 .sideMenu {
     width: 300px;
-    /* Fixed width for the menu */
     height: 100vh;
     background-color: $card-bg;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
@@ -12,6 +11,11 @@
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
     z-index: 10;
     padding: $spacing-xl $spacing-lg;
+
+    @media (max-width: 768px) {
+        width: 280px;
+        padding: $spacing-lg $spacing-md;
+    }
 }
 
 .topSection {
@@ -40,8 +44,6 @@
     .menuItem {
         justify-content: flex-start;
         padding-left: $spacing-lg;
-
-        // Customize if outline vs full color needs different touch target tweaks
     }
 }
 

@@ -182,6 +182,11 @@
     flex-direction: column;
     overflow: hidden;
 
+    @media (max-width: 768px) {
+        width: 95%;
+        margin: $spacing-md;
+    }
+
     .modalHeader {
         padding: $spacing-lg;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -217,6 +222,11 @@
             padding: $spacing-md;
             border-radius: $border-radius;
             margin-bottom: $spacing-lg;
+
+            @media (max-width: 768px) {
+                flex-direction: column;
+                gap: $spacing-md;
+            }
 
             div {
                 display: flex;

@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import ActionButton from '../ActionButton';
 import styles from './SideMenu.module.scss';
 
-const SideMenu = () => {
+const SideMenu = ({ onCloseMenu }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -15,9 +15,14 @@ const SideMenu = () => {
     ];
 
     const handleCancel = () => {
-        // Return to main menu/home and clear any active flow states in the future
         navigate('/');
+        if (onCloseMenu) onCloseMenu();
     };
+
+    const handleNavigate = (path) => {
+        navigate(path);
+        if (onCloseMenu) onCloseMenu();
+    }
 
     return (
         <aside className={styles.sideMenu}>
@@ -34,7 +39,7 @@ const SideMenu = () => {
                                 key={index}
                                 variant={isActive ? 'primary' : 'outline'}
                                 fullWidth
-                                onClick={() => navigate(item.path)}
+                                onClick={() => handleNavigate(item.path)}
                                 className={styles.menuItem}
                             >
                                 {item.label}
