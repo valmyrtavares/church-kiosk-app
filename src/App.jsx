@@ -7,6 +7,7 @@ import Tithe from './pages/Tithe';
 import PrayerRequest from './pages/PrayerRequest';
 import MiracleReport from './pages/MiracleReport';
 import CustomerRegistration from './pages/CustomerRegistration';
+import AdminDashboard from './pages/AdminDashboard'; // Import do Admin
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
           <Route path="/milagre" element={<MiracleReport />} />
           <Route path="/cadastro" element={<CustomerRegistration />} />
         </Route>
+
+        {/* Rota Administrativa (fora do Layout do Totem) */}
+        <Route path="/admin" element={<AdminDashboard />} />
 
       </Routes>
     </BrowserRouter>
