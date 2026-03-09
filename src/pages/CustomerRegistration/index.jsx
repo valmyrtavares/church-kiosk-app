@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import formStyles from '../../styles/form.module.scss';
 import ActionButton from '../../components/ActionButton';
 import { storageService } from '../../services/storageService';
+import { validateCPF, maskCPF, maskPhone, maskRG } from '../../utils/validators';
 
 const CustomerRegistration = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState('');
+    const [error, setError] = useState('');
 
     const [formData, setFormData] = useState({
         nome: '',
@@ -21,7 +23,12 @@ const CustomerRegistration = () => {
     });
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        let { name, value, type, checked } = e.target;
+
+        if (name === 'cpf') value = maskCPF(value);
+        if (name === 'celular') value = maskPhone(value);
+        if (name === 'rg') value = maskRG(value);
+
         setFormData(prev => ({
             ...prev,
             [name]: type === 'checkbox' ? checked : value
@@ -30,29 +37,43 @@ const CustomerRegistration = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+
         if (!formData.nome || !formData.cpf) {
-            alert('Nome e CPF são obrigatórios.');
+            setError('Nome e CPF são obrigatórios.');
             return;
+        }
+
+        const cleanCpf = formData.cpf.replace(/\D/g, '');
+        if (!validateCPF(cleanCpf)) {
+            setError('Por favor, digite um CPF válido.');
+            return;
+        }
+
+        if (formData.email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(formData.email)) {
+                setError('O formato do e-mail é inválido.');
+                return;
+            }
         }
 
         setLoading(true);
         try {
-            // Remover máscara do CPF para salvar
             const cleanData = {
                 ...formData,
-                cpf: formData.cpf.replace(/\D/g, '')
+                cpf: cleanCpf
             };
 
             await storageService.addDoc('clientes', cleanData);
             setSuccess('Cadastro realizado com sucesso!');
 
-            // Volta para o início após alguns segundos
             setTimeout(() => {
-                navigate('/');
+                navigate(-1); // Volta pro fluxo de pagamento anterior
             }, 2000);
 
         } catch (err) {
-            alert('Erro ao realizar cadastro.');
+            setError('Erro ao realizar cadastro.');
             console.error(err);
         } finally {
             setLoading(false);
@@ -69,6 +90,13 @@ const CustomerRegistration = () => {
                 </div>
             ) : (
                 <form className={formStyles.card} onSubmit={handleSubmit}>
+
+                    {error && (
+                        <div className={`${formStyles.feedback} ${formStyles.error}`} style={{ marginBottom: '15px' }}>
+                            {error}
+                        </div>
+                    )}
+
                     <div className={formStyles.inputGroup}>
                         <label>Nome Completo*</label>
                         <input name="nome" value={formData.nome} onChange={handleChange} required />
@@ -76,22 +104,22 @@ const CustomerRegistration = () => {
 
                     <div className={formStyles.inputGroup}>
                         <label>CPF*</label>
-                        <input name="cpf" type="number" placeholder="Somente números" value={formData.cpf} onChange={handleChange} required />
+                        <input name="cpf" type="text" placeholder="000.000.000-00" value={formData.cpf} onChange={handleChange} required />
                     </div>
 
                     <div className={formStyles.inputGroup}>
                         <label>RG</label>
-                        <input name="rg" value={formData.rg} onChange={handleChange} />
+                        <input name="rg" type="text" value={formData.rg} onChange={handleChange} />
                     </div>
 
                     <div className={formStyles.inputGroup}>
                         <label>Celular</label>
-                        <input name="celular" type="tel" value={formData.celular} onChange={handleChange} />
+                        <input name="celular" type="tel" placeholder="(00) 00000-0000" value={formData.celular} onChange={handleChange} />
                     </div>
 
                     <div className={formStyles.inputGroup}>
                         <label>E-mail</label>
-                        <input name="email" type="email" value={formData.email} onChange={handleChange} />
+                        <input name="email" type="email" placeholder="seuemail@exemplo.com" value={formData.email} onChange={handleChange} />
                     </div>
 
                     <div className={formStyles.inputGroup}>

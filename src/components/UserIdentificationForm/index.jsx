@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import formStyles from '../../styles/form.module.scss';
 import ActionButton from '../../components/ActionButton';
 import { storageService } from '../../services/storageService';
+import { validateCPF, maskCPF } from '../../utils/validators';
 
 const UserIdentificationForm = ({ onIdentified }) => {
     const navigate = useNavigate();
@@ -18,9 +19,16 @@ const UserIdentificationForm = ({ onIdentified }) => {
         }
     };
 
+    const handleCpfChange = (e) => {
+        setCpf(maskCPF(e.target.value));
+        setError(''); // limpa erro ao digitar
+    };
+
     const handleCpfSubmit = async () => {
-        if (!cpf || cpf.length < 11) {
-            setError('Por favor, informe um CPF válido.');
+        const cleanCpf = cpf.replace(/\D/g, '');
+
+        if (!validateCPF(cleanCpf)) {
+            setError('Por favor, digite um CPF válido.');
             return;
         }
 
@@ -28,13 +36,12 @@ const UserIdentificationForm = ({ onIdentified }) => {
         setError('');
 
         try {
-            const cleanCpf = String(cpf).replace(/\D/g, '');
             const client = await storageService.getClientByCpf(cleanCpf);
 
             if (client) {
                 onIdentified({ isAnonymous: false, client });
             } else {
-                setError('Cliente não encontrado.');
+                setError('Cliente não encontrado. Por favor, fale com o atendente ao lado ou tente novamente, pois o número pode ter sido digitado errado agora ou no cadastro.');
             }
         } catch (err) {
             setError('Erro ao buscar cadastro.');
@@ -68,11 +75,11 @@ const UserIdentificationForm = ({ onIdentified }) => {
         return (
             <div className={formStyles.card}>
                 <div className={formStyles.inputGroup}>
-                    <label>Informe seu CPF (apenas números)</label>
+                    <label>Informe seu CPF</label>
                     <input
-                        type="number"
+                        type="text"
                         value={cpf}
-                        onChange={(e) => setCpf(e.target.value)}
+                        onChange={handleCpfChange}
                         placeholder="000.000.000-00"
                         disabled={loading}
                     />
@@ -89,12 +96,12 @@ const UserIdentificationForm = ({ onIdentified }) => {
                         Voltar
                     </ActionButton>
 
-                    {error === 'Cliente não encontrado.' ? (
+                    {error.includes('Cliente não encontrado') ? (
                         <ActionButton variant="secondary" fullWidth onClick={handleRegister} disabled={loading}>
                             Cadastrar Agora
                         </ActionButton>
                     ) : (
-                        <ActionButton variant="primary" fullWidth onClick={handleCpfSubmit} disabled={loading || !cpf}>
+                        <ActionButton variant="primary" fullWidth onClick={handleCpfSubmit} disabled={loading || cpf.length < 14}>
                             {loading ? 'Buscando...' : 'Buscar'}
                         </ActionButton>
                     )}
