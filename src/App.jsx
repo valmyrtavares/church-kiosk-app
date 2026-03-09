@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
+import LayoutTotem from './components/LayoutTotem';
 import Home from './pages/Home';
 import Offering from './pages/Offering';
 import Tithe from './pages/Tithe';
@@ -10,16 +10,15 @@ import MiracleReport from './pages/MiracleReport';
 function App() {
   return (
     <BrowserRouter>
-      <Header />
-      <main className="content">
-        <Routes>
+      <Routes>
+        <Route element={<LayoutTotem />}>
           <Route path="/" element={<Home />} />
           <Route path="/oferta" element={<Offering />} />
           <Route path="/dizimo" element={<Tithe />} />
           <Route path="/pedido-oracao" element={<PrayerRequest />} />
           <Route path="/milagre" element={<MiracleReport />} />
-        </Routes>
-      </main>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
