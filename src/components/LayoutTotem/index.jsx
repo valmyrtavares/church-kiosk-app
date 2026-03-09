@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import SideMenu from '../SideMenu';
 import styles from './LayoutTotem.module.scss';
-import ActionButton from '../ActionButton';
+import headerImage from '../../assets/images/header.jpg';
 
 const LayoutTotem = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -36,7 +36,13 @@ const LayoutTotem = () => {
             )}
 
             <main className={styles.mainContent}>
-                <Outlet />
+                <div className={styles.topBannerWrapper}>
+                    <img src={headerImage} alt="Header Universal Igreja" className={styles.topBanner} />
+                </div>
+
+                <div className={styles.pageContent}>
+                    <Outlet />
+                </div>
             </main>
         </div>
     );
