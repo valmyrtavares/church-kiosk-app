@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import ActionButton from '../ActionButton';
 import styles from './MainMenu.module.scss';
+import headerImage from '../../assets/images/header.jpg';
 
 const MainMenu = () => {
     const navigate = useNavigate();
@@ -15,6 +16,10 @@ const MainMenu = () => {
 
     return (
         <div className={styles.container}>
+            <div className={styles.headerImageWrapper}>
+                <img src={headerImage} alt="Header Igreja" className={styles.headerImage} />
+            </div>
+
             <div className={styles.header}>
                 <h2>Seja Bem-Vindo!</h2>
                 <p>Como podemos ajudar você hoje?</p>

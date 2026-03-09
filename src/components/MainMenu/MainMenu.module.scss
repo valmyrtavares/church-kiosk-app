@@ -9,6 +9,26 @@
     padding: $spacing-md;
 }
 
+.headerImageWrapper {
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: $spacing-xl;
+    border-radius: $border-radius;
+    overflow: hidden;
+    box-shadow: $box-shadow;
+
+    .headerImage {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        display: block;
+
+        @media (max-width: 768px) {
+            height: 150px;
+        }
+    }
+}
+
 .header {
     text-align: center;
     margin-bottom: $spacing-xl * 2;
