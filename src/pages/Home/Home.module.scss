@@ -1,0 +1,48 @@
+@import '../../styles/variables';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    padding: $spacing-xl;
+    text-align: center;
+
+    h2 {
+        margin-bottom: $spacing-xl;
+        font-size: 2rem;
+        color: $text-color;
+    }
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-lg;
+    width: 100%;
+    max-width: 800px;
+}
+
+.card {
+    padding: 40px $spacing-lg;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    transition: transform 0.2s;
+
+    &:active {
+        transform: scale(0.98);
+    }
+
+    &.primary {
+        background-color: $primary-color;
+        color: white;
+    }
+
+    &.secondary {
+        background-color: $secondary-color;
+        color: white;
+    }
+}
